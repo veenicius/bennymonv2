@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PokemonCard from "../PokemonCard/PokemonCard";
 import axios from "redaxios";
 
-export default function CardsList() {
+export default function CardsList(props) {
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +65,7 @@ export default function CardsList() {
           name={poke.name}
           type={poke.type}
           image={poke.image}
+          setPokemonId={props.setPokemonId}
         />
       ))}
       {isLoading && <p>Carregando...</p>}

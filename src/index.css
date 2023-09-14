@@ -3,7 +3,114 @@
 @tailwind utilities;
 @tailwind preflight;
 
-
 body {
-    background-color: #E5E9F0
+  background-color: #e5e9f0;
 }
+
+/* Normal Type */
+.normalType {
+    background-color: #EDEDED;
+    color: #A8A878;
+ }
+ 
+ /* Fire Type */
+ .fireType {
+    background-color: #FFE4CC;
+    color: #F08030;
+ }
+ 
+ /* Water Type */
+ .waterType {
+    background-color: #CCE5FF;
+    color: #6890F0;
+ }
+ 
+ /* Electric Type */
+ .electricType {
+    background-color: #FFFAE5;
+    color: #F8D030;
+ }
+ 
+ /* Grass Type */
+ .grassType {
+    background-color: #DFF5D4;
+    color: #78C850;
+ }
+ 
+ /* Ice Type */
+ .iceType {
+    background-color: #ECF9F9;
+    color: #509090;
+ }
+ 
+ /* Fighting Type */
+ .fightingType {
+    background-color: #FFD9D6;
+    color: #9A1A10;
+ }
+ 
+ /* Poison Type */
+ .poisonType {
+    background-color: #F2CCF2;
+    color: #802080;
+ }
+ 
+ /* Ground Type */
+ .groundType {
+    background-color: #FAEAD1;
+    color: #9A6B30;
+ }
+ 
+ /* Flying Type */
+ .flyingType {
+    background-color: #E0DDFF;
+    color: #A890F0;
+ }
+ 
+ /* Psychic Type */
+ .psychicType {
+    background-color: #FFDAE5;
+    color: #F85888;
+ }
+ 
+ /* Bug Type */
+ .bugType {
+    background-color: #E9F2B0;
+    color: #A8B820;
+ }
+ 
+ /* Rock Type */
+ .rockType {
+    background-color: #EAE1C3;
+    color: #786020;
+ }
+ 
+ /* Ghost Type */
+ .ghostType {
+    background-color: #DAD1E8;
+    color: #705898;
+ }
+ 
+ /* Dragon Type */
+ .dragonType {
+    background-color: #D9C7FF;
+    color: #7038F8;
+ }
+ 
+ /* Dark Type */
+ .darkType {
+    background-color: #D1CFCF;
+    color: #705848;
+ }
+ 
+ /* Steel Type */
+ .steelType {
+    background-color: #ECECF3;
+    color: #7D7DA7;
+ }
+ 
+ /* Fairy Type */
+ .fairyType {
+    background-color: #FFE7EB;
+    color: #EE99AC;
+ }
