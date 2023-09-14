@@ -57,7 +57,7 @@ export default function CardsList(props) {
   }, []);
 
   return (
-    <div className="relative grid grid-col-2 gap-8 md:grid-cols-2 xl:grid-cols-4 mt-12">
+    <div className="relative grid grid-col-2 gap-x-2 gap-y-8 md:grid-cols-2 xl:grid-cols-4 mt-12">
       {pokemons.map((poke, index) => (
         <PokemonCard
           key={index}
