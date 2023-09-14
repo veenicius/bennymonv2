@@ -23,7 +23,7 @@ export default function Search(props) {
             type: data.types[0]?.type?.name || "",
           };
 
-          setPokemonData(pokemonData);
+          props.setPokemonData(pokemonData);
           setSearchNoResults(false);
           setSearchInput("");
         } else {
