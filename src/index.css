@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind preflight;
+
+
+body {
+    background-color: #E5E9F0
+}
