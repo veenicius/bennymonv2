@@ -1,6 +1,47 @@
-export default function Search() {
+import React, { useState } from "react";
+import axios from "axios";
+
+export default function Search(props) {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchNoResults, setSearchNoResults] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${searchInput.toLowerCase()}`
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        if (data) {
+          const pokemonData = {
+            name: data.name,
+            id: data.id,
+            image: data.sprites?.front_default || "",
+            type: data.types[0]?.type?.name || "",
+          };
+
+          setPokemonData(pokemonData);
+          setSearchNoResults(false);
+          setSearchInput("");
+        } else {
+          setSearchNoResults(true);
+          console.error("Dados de Pokémon não encontrados na resposta da API");
+        }
+      } else {
+        setSearchNoResults(true);
+        console.error("Erro ao buscar dados de Pokémon");
+      }
+    } catch (error) {
+      setSearchNoResults(true);
+      console.error("Erro ao buscar dados de Pokémon:", error);
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -28,6 +69,9 @@ export default function Search() {
         <input
           type="search"
           id="default-search"
+          name="search"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
           placeholder="Search for your Pokémon!"
           required
@@ -39,6 +83,9 @@ export default function Search() {
           Search
         </button>
       </div>
+      {searchNoResults && (
+        <p className="text-red-500">Nenhum Pokémon encontrado.</p>
+      )}
     </form>
   );
 }

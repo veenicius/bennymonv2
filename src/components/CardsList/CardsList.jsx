@@ -58,16 +58,28 @@ export default function CardsList(props) {
 
   return (
     <div className="relative grid grid-col-2 gap-x-2 gap-y-8 md:grid-cols-2 xl:grid-cols-4 mt-12">
-      {pokemons.map((poke, index) => (
+      {props.searchNoResults ? (
+        <p>Não existe um Pokémon com esse nome.</p>
+      ) : props.pokemonData ? (
         <PokemonCard
-          key={index}
-          id={poke.id}
-          name={poke.name}
-          type={poke.type}
-          image={poke.image}
+          id={props.pokemonData.id}
+          name={props.pokemonData.name}
+          type={props.pokemonData.type}
+          image={props.pokemonData.image}
           setPokemonId={props.setPokemonId}
         />
-      ))}
+      ) : (
+        pokemons.map((poke, index) => (
+          <PokemonCard
+            key={index}
+            id={poke.id}
+            name={poke.name}
+            type={poke.type}
+            image={poke.image}
+            setPokemonId={props.setPokemonId}
+          />
+        ))
+      )}
       {isLoading && <p>Carregando...</p>}
     </div>
   );

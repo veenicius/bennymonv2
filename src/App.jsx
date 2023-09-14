@@ -6,6 +6,8 @@ import Search from "./components/Search/Search";
 
 function App() {
   const [pokemonId, setPokemonId] = useState([]);
+  const [pokemonData, setPokemonData] = useState(null); 
+
   return (
     <>
       <div className="container mx-auto">
@@ -13,8 +15,8 @@ function App() {
           <div className="col-12 grid xl:col-8">
             <section className="text-gray-600 body-font">
               <div className="container px-5 py-12 mx-auto">
-                <Search />
-                <CardsList setPokemonId={setPokemonId} />
+                <Search setPokemonData={setPokemonData} />
+                <CardsList setPokemonId={setPokemonId} pokemonData={pokemonData} /> 
               </div>
             </section>
           </div>

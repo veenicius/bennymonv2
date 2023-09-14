@@ -18,7 +18,7 @@ export default function PokemonCard(props) {
         src={props.image}
         alt={props.name}
       ></img>
-      <h2 class="text-xs text-gray-400 tracking-widest font-medium title-font mb-1">
+      <h2 className="text-xs text-gray-400 tracking-widest font-medium title-font mb-1">
         {formatPokemonId(props.id)}
       </h2>
       <h1 className="capitalize title-font text-base font-semibold text-primaryText mb-3">
