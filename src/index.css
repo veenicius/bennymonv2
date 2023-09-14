@@ -9,114 +9,121 @@ body {
 
 /* Normal Type */
 .normalType {
-    background-color: #EDEDED;
-    color: #A8A878;
- }
- 
- /* Fire Type */
- .fireType {
-    background-color: #FFE4CC;
-    color: #F08030;
- }
- 
- /* Water Type */
- .waterType {
-    background-color: #CCE5FF;
-    color: #6890F0;
- }
- 
- /* Electric Type */
- .electricType {
-    background-color: #FFFAE5;
-    color: #F8D030;
- }
- 
- /* Grass Type */
- .grassType {
-    background-color: #DFF5D4;
-    color: #78C850;
- }
- 
- /* Ice Type */
- .iceType {
-    background-color: #ECF9F9;
-    color: #509090;
- }
- 
- /* Fighting Type */
- .fightingType {
-    background-color: #FFD9D6;
-    color: #9A1A10;
- }
- 
- /* Poison Type */
- .poisonType {
-    background-color: #F2CCF2;
-    color: #802080;
- }
- 
- /* Ground Type */
- .groundType {
-    background-color: #FAEAD1;
-    color: #9A6B30;
- }
- 
- /* Flying Type */
- .flyingType {
-    background-color: #E0DDFF;
-    color: #A890F0;
- }
- 
- /* Psychic Type */
- .psychicType {
-    background-color: #FFDAE5;
-    color: #F85888;
- }
- 
- /* Bug Type */
- .bugType {
-    background-color: #E9F2B0;
-    color: #A8B820;
- }
- 
- /* Rock Type */
- .rockType {
-    background-color: #EAE1C3;
-    color: #786020;
- }
- 
- /* Ghost Type */
- .ghostType {
-    background-color: #DAD1E8;
-    color: #705898;
- }
- 
- /* Dragon Type */
- .dragonType {
-    background-color: #D9C7FF;
-    color: #7038F8;
- }
- 
- /* Dark Type */
- .darkType {
-    background-color: #D1CFCF;
-    color: #705848;
- }
- 
- /* Steel Type */
- .steelType {
-    background-color: #ECECF3;
-    color: #7D7DA7;
- }
- 
- /* Fairy Type */
- .fairyType {
-    background-color: #FFE7EB;
-    color: #EE99AC;
- }
- 
- .mainType {
-    background-color: #EAEFF5;
-    color: #4C566A;
- }
+  background-color: #ededed;
+  color: #a8a878;
+}
 
+/* Fire Type */
+.fireType {
+  background-color: #ffe4cc;
+  color: #f08030;
+}
+
+/* Water Type */
+.waterType {
+  background-color: #cce5ff;
+  color: #6890f0;
+}
+
+/* Electric Type */
+.electricType {
+  background-color: #fffae5;
+  color: #f8d030;
+}
+
+/* Grass Type */
+.grassType {
+  background-color: #dff5d4;
+  color: #78c850;
+}
+
+/* Ice Type */
+.iceType {
+  background-color: #ecf9f9;
+  color: #509090;
+}
+
+/* Fighting Type */
+.fightingType {
+  background-color: #ffd9d6;
+  color: #9a1a10;
+}
+
+/* Poison Type */
+.poisonType {
+  background-color: #f2ccf2;
+  color: #802080;
+}
+
+/* Ground Type */
+.groundType {
+  background-color: #faead1;
+  color: #9a6b30;
+}
+
+/* Flying Type */
+.flyingType {
+  background-color: #e0ddff;
+  color: #a890f0;
+}
+
+/* Psychic Type */
+.psychicType {
+  background-color: #ffdae5;
+  color: #f85888;
+}
+
+/* Bug Type */
+.bugType {
+  background-color: #e9f2b0;
+  color: #a8b820;
+}
+
+/* Rock Type */
+.rockType {
+  background-color: #eae1c3;
+  color: #786020;
+}
+
+/* Ghost Type */
+.ghostType {
+  background-color: #dad1e8;
+  color: #705898;
+}
+
+/* Dragon Type */
+.dragonType {
+  background-color: #d9c7ff;
+  color: #7038f8;
+}
+
+/* Dark Type */
+.darkType {
+  background-color: #d1cfcf;
+  color: #705848;
+}
+
+/* Steel Type */
+.steelType {
+  background-color: #ececf3;
+  color: #7d7da7;
+}
+
+/* Fairy Type */
+.fairyType {
+  background-color: #ffe7eb;
+  color: #ee99ac;
+}
+
+.mainType {
+  background-color: #eaeff5;
+  color: #4c566a;
+}
+
+#scroll {
+  position: sticky;
+  top: 0; /* Ajuste conforme necessário para a distância do topo do container pai */
+  max-height: 100vh; /* Limite a altura máxima para a altura da janela visível */
+  overflow-y: auto; /* Adicione barras de rolagem quando o conteúdo exceder a altura máxima */
+  z-index: 1; /* Certifique-se de que a div fixa esteja acima do conteúdo rolável */
+}

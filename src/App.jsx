@@ -18,7 +18,7 @@ function App() {
               </div>
             </section>
           </div>
-          <div className="hidden xl:block col-4">
+          <div id="scroll" className="hidden xl:block col-4 fixed right-0">
             <section className="text-gray-600 body-font">
               <div className="container px-5 py-12 mx-auto">
                 <PokemonInfo pokemonId={pokemonId} />
