@@ -1,7 +1,11 @@
 import "./PokemonCard.css";
 
 export default function PokemonCard(props) {
-  // console.log(typeBg);
+
+  const formatPokemonId = (id) => {
+    return String(id).padStart(4, '0');
+  }
+
   return (
     <div
       onClick={() => props.setPokemonId(props.id)}
@@ -14,8 +18,8 @@ export default function PokemonCard(props) {
         src={props.image}
         alt={props.name}
       ></img>
-      <h2 className="capitalize tracking-widest text-xs title-font text-primaryText mb-1">
-        {props.id}
+      <h2 class="text-xs text-gray-400 tracking-widest font-medium title-font mb-1">
+        {formatPokemonId(props.id)}
       </h2>
       <h1 className="capitalize title-font text-base font-semibold text-primaryText mb-3">
         {props.name}
