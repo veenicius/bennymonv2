@@ -1,16 +1,15 @@
 import "./PokemonCard.css";
 
 export default function PokemonCard(props) {
-
   const formatPokemonId = (id) => {
-    return String(id).padStart(4, '0');
-  }
+    return String(id).padStart(4, "0");
+  };
 
   return (
     <div
       onClick={() => props.setPokemonId(props.id)}
       id={props.id}
-      className="p-8 h-fit relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-70"
+      className="p-8 h-full relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-70"
     >
       <img
         className="absolute right-0 -top-12 pokeImage"
@@ -25,15 +24,21 @@ export default function PokemonCard(props) {
         {props.name}
       </h1>
 
-      <span
-        className={`${props.type}Type w-fit px-4 flex py-2 rounded-full items-center flex-col leading-none`}
-      >
-        <span
-          className={`capitalize text-xs text-${props.type}Type-text font-bold`}
-        >
-          {props.type}
-        </span>
-      </span>
+      <div className="inline-flex grid-cols-2 gap-2 w-full">
+        {props.type.map((type, index) => (
+          <span
+            key={index}
+            className={`${type}Type w-fit px-4 flex py-2 rounded-full items-center flex-col leading-none`}
+          >
+            <span
+              key={index}
+              className={`capitalize text-xs text-${type}Type-text font-bold`}
+            >
+              {props.type[index]}
+            </span>
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

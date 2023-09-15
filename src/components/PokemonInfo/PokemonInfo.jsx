@@ -3,10 +3,15 @@ import axios from "redaxios";
 
 export default function PokemonInfo(props) {
   const formatPokemonId = (id) => {
-    return String(id).padStart(4, '0');
-  }
+    return String(id).padStart(4, "0");
+  };
 
   const [pokemonInfo, setPokemonInfo] = useState(null);
+
+  async function getPokemonDescription(endpoint) {
+    const response = await axios.get(endpoint);
+    return response.data.flavor_text_entries[0].flavor_text;
+  }
 
   async function getPokemonInfo(id) {
     if (id == null) {
@@ -21,6 +26,11 @@ export default function PokemonInfo(props) {
       id: data.id,
       image: data.sprites.front_default,
       type: data.types[0].type.name,
+      description: getPokemonDescription(data.species.url),
+      abilities: data.abilities.map((ability) => ability.name),
+      height: data.height,
+      weight: data.weight,
+      baseexp: data.base_experience
     };
 
     setPokemonInfo(currentPoke);

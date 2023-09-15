@@ -25,7 +25,7 @@ export default function CardsList(props) {
             name: response.data.name,
             id: response.data.id,
             image: response.data.sprites.front_default,
-            type: response.data.types[0].type.name,
+            type: response.data.types.map((type) => type.type.name),
           };
         })
       );
