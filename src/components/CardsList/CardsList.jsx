@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PokemonCard from "../PokemonCard/PokemonCard";
+import SkeletonCard from "../SkeletonCard/SkeletonCard";
 import axios from "redaxios";
 
 export default function CardsList(props) {
@@ -80,7 +81,14 @@ export default function CardsList(props) {
           />
         ))
       )}
-      {isLoading && <p>Carregando...</p>}
+      {isLoading && (
+        <>
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </>
+      )}{" "}
     </div>
   );
 }

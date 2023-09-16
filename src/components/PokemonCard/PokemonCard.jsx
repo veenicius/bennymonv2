@@ -24,7 +24,7 @@ export default function PokemonCard(props) {
         {props.name}
       </h1>
 
-      <div className="inline-flex grid-cols-2 gap-2 w-full">
+      <div className="inline-flex grid-cols-2 gap-1 w-full">
         {props.type.map((type, index) => (
           <span
             key={index}

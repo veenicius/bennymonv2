@@ -5,7 +5,7 @@ import PokemonInfo from "./components/PokemonInfo/PokemonInfo";
 import Search from "./components/Search/Search";
 
 function App() {
-  const [pokemonId, setPokemonId] = useState([]);
+  const [pokemonId, setPokemonId] = useState(null);
   const [pokemonData, setPokemonData] = useState(null); 
 
   return (
@@ -20,7 +20,7 @@ function App() {
               </div>
             </section>
           </div>
-          <div id="scroll" className="hidden xl:block col-4 fixed right-0">
+          <div id="scroll" className="overflow-hidden hidden xl:block col-4 fixed right-0">
             <section className="text-gray-600 body-font">
               <div className="container px-5 py-12 mx-auto">
                 <PokemonInfo pokemonId={pokemonId} />

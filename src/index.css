@@ -115,15 +115,30 @@ body {
   color: #ee99ac;
 }
 
-.mainType {
+.abilityType {
   background-color: #eaeff5;
   color: #4c566a;
 }
 
 #scroll {
   position: sticky;
-  top: 0; /* Ajuste conforme necessário para a distância do topo do container pai */
-  max-height: 100vh; /* Limite a altura máxima para a altura da janela visível */
-  overflow-y: auto; /* Adicione barras de rolagem quando o conteúdo exceder a altura máxima */
-  z-index: 1; /* Certifique-se de que a div fixa esteja acima do conteúdo rolável */
+  top: 0;
+  max-height: 100vh;
+  z-index: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-line {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
 }

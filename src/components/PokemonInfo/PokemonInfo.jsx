@@ -7,213 +7,320 @@ export default function PokemonInfo(props) {
   };
 
   const [pokemonInfo, setPokemonInfo] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getPokemonDescription(endpoint) {
     const response = await axios.get(endpoint);
     return response.data.flavor_text_entries[0].flavor_text;
   }
 
+  // async function getPokemonEvolve(endpoint) {
+  //   const evolutionChainUrl = await axios.get(endpoint);
+  //   const evolutionData = await axios.get(
+  //     evolutionChainUrl.data.evolution_chain.url
+  //   );
+
+  //   let evoChain = [];
+  //   let evoData = evolutionData.data.chain;
+
+  //   do {
+  //     let numberOfEvolutions = evoData.evolves_to.length;
+
+  //     console.log(evoData.min_level);
+  //     evoChain.push({
+  //       species_name: evoData.species.name,
+  //       min_level: !evoData ? 1 : evoData.min_level,
+  //       // trigger_name: !evoData ? null : evoData.trigger.name,
+  //       item: !evoData ? null : evoData.item,
+  //     });
+
+  //     if (numberOfEvolutions > 1) {
+  //       for (let i = 1; i < numberOfEvolutions; i++) {
+  //         evoChain.push({
+  //           species_name: evoData.evolves_to[i].species.name,
+  //           min_level: !evoData.evolves_to[i]
+  //             ? 1
+  //             : evoData.evolves_to[i].min_level,
+  //           trigger_name: !evoData.evolves_to[i]
+  //             ? null
+  //             : evoData.evolves_to[i].trigger.name,
+  //           item: !evoData.evolves_to[i] ? null : evoData.evolves_to[i].item,
+  //         });
+  //       }
+  //     }
+
+  //     evoData = evoData.evolves_to[0];
+  //   } while (evoData != undefined && evoData.hasOwnProperty("evolves_to"));
+
+  //   console.log(evoChain);
+  //   return evoChain;
+  // }
+
+  async function getPokemonWeakness(...args) {
+    const WeaknessObj = [];
+
+    await Promise.all(
+      args[0].map(async (element) => {
+        const res = await axios.get(element);
+        let weakness = res.data.damage_relations.double_damage_from;
+        WeaknessObj.push(weakness);
+      })
+    );
+
+    const weakness = new Set();
+
+    WeaknessObj.forEach((wk) => {
+      wk.forEach((w) => {
+        weakness.add(w.name);
+      });
+    });
+
+    console.log(weakness);
+    return Array.from(weakness);
+  }
+
   async function getPokemonInfo(id) {
     if (id == null) {
       return;
     }
+    setIsLoading(true);
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = response.data;
 
-    console.log(data);
     let currentPoke = {
       name: data.name,
       id: data.id,
       image: data.sprites.front_default,
-      type: data.types[0].type.name,
-      description: getPokemonDescription(data.species.url),
-      abilities: data.abilities.map((ability) => ability.name),
+      type: data.types.map((type) => type.type.name),
+      description: await getPokemonDescription(data.species.url),
+      abilities: data.abilities.map((ability) => ability.ability.name),
       height: data.height,
       weight: data.weight,
-      baseexp: data.base_experience
+      baseexp: data.base_experience,
+      weakness: await getPokemonWeakness(
+        data.types.map((type) => type.type.url)
+      ),
+      // evolutions: await getPokemonEvolve(data.species.url)
     };
 
     setPokemonInfo(currentPoke);
+    setIsLoading(false);
   }
 
   useEffect(() => {
+    setIsLoading(false);
     getPokemonInfo(props.pokemonId);
   }, [props.pokemonId]);
 
   return (
     <>
-      {pokemonInfo ? (
-        <>
-          <div className="border-t-24 p-8 h-fit relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-100">
-            <img
-              className="w-32 absolute right-0 top-0 pokeImage"
-              src={pokemonInfo.image}
-            />
-            <h2 className="capitalize tracking-widest text-xs title-font text-primaryText mb-1">
-              {formatPokemonId(pokemonInfo.id)}
-            </h2>
-            <h1 className="capitalize title-font text-base font-semibold text-primaryText mb-1">
-              {pokemonInfo.name}
-            </h1>
-
-            <span
-              className={`${pokemonInfo.type}Type w-fit px-4 flex py-2 rounded-full items-center flex-col leading-none`}
-            >
-              <span
-                className={`capitalize text-xs text-${pokemonInfo.type}Type-text font-bold`}
+      {isLoading ? (
+        <div className="fade-in-line border-t-24 p-8 h-fit relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-100">
+          <div
+            role="status"
+            className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center"
+          >
+            <div className="w-full">
+              <div className="h-2.5 bg-gray-200 rounded-full w-48 mb-4"></div>
+              <div className="h-2 bg-gray-200 rounded-full max-w-[480px] mb-2.5"></div>
+              <div className="h-2 bg-gray-200 rounded-full mb-2.5"></div>
+              <div className="h-2 bg-gray-200 rounded-full max-w-[440px] mb-2.5"></div>
+              <div className="h-2 bg-gray-200 rounded-full max-w-[460px] mb-2.5"></div>
+              <div className="h-2 bg-gray-200 rounded-full max-w-[360px]"></div>
+            </div>
+            <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96">
+              <svg
+                className="w-10 h-10 text-gray-200"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
               >
-                {pokemonInfo.type}
+                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+              </svg>
+            </div>
+          </div>
+          <span className="sr-only">Loading...</span>
+        </div>
+      ) : pokemonInfo ? (
+        <div className="fade-in-line border-t-24 p-8 h-fit relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-100">
+          <img
+            className="fade-in-line w-32 absolute right-0 top-0 pokeImage"
+            src={pokemonInfo.image}
+          />
+          <h2 className="fade-in-line capitalize tracking-widest text-xs title-font text-primaryText mb-1">
+            {formatPokemonId(pokemonInfo.id)}
+          </h2>
+          <h1 className="fade-in-line capitalize title-font text-base font-semibold text-primaryText mb-1">
+            {pokemonInfo.name}
+          </h1>
+          <div className="fade-in-line inline-flex grid-cols-2 gap-1 w-full">
+            {pokemonInfo.type.map((type, index) => (
+              <span
+                key={index}
+                className={`${type}Type w-fit px-4 flex py-2 rounded-full items-center flex-col leading-none`}
+              >
+                <span
+                  key={index}
+                  className={`capitalize text-xs text-${type}Type-text font-bold`}
+                >
+                  {type}
+                </span>
               </span>
-            </span>
-
-            <div className="description my-8">
-              <h1 className="capitalize w-full text-center text-base font-semibold text-primaryText mb-1">
-                Pokemon Description
-              </h1>
-              <p className="text-center normal-case text-base text-primaryText">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
-                massa mi. Aliquam in hendrerit urna. Pellentesque sit amet
-                sapien fringilla, mattis ligula consectetur, ultrices mauris.
-              </p>
+            ))}
+          </div>
+          <div className="fade-in-line description my-8">
+            <h1 className="capitalize w-full text-center text-base font-semibold text-primaryText mb-1">
+              Pokemon Description
+            </h1>
+            <p className="text-center normal-case text-base text-primaryText">
+              {pokemonInfo.description}
+            </p>
+          </div>
+          <div className="abilities my-8">
+            <h1 className="fade-in-line w-full text-center capitalize text-base font-semibold text-primaryText mb-2">
+              Abilities
+            </h1>
+            <div className="fade-in-line inline-flex grid-cols-2 gap-1 w-full">
+              {pokemonInfo.abilities.map((ability, index) => (
+                <span
+                  key={index}
+                  className={`abilityType w-full px-4 flex py-2 rounded-full items-center flex-col leading-none`}
+                >
+                  <span
+                    key={index}
+                    className={`capitalize text-xs text-abilityType-text font-bold`}
+                  >
+                    {ability}
+                  </span>
+                </span>
+              ))}
             </div>
-            <div className="abilities my-8">
-              <h1 className="w-full text-center capitalize text-base font-semibold text-primaryText mb-2">
-                Abilities
-              </h1>
-              <div className="inline-grid grid-cols-2 gap-4 w-full">
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full flex items-start flex-col leading-none">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Torrent
-                  </span>
+          </div>
+          <div className="fade-in-line stats my-8">
+            <div className="inline-grid grid-cols-3 gap-4 w-full">
+              <div className="text-center w-auto">
+                <span className="block text-base font-semibold uppercase tracking-widest">
+                  Height
                 </span>
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full flex items-start flex-col leading-none">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Defiant
-                  </span>
+                <span className="block text-gray-400">
+                  {pokemonInfo.height}
                 </span>
-              </div>
-            </div>
-            <div className="stats my-8">
-              <div className="inline-grid grid-cols-3 gap-4 w-full">
-                <div className="text-center w-auto">
-                  <span className="block text-base font-semibold uppercase tracking-widest">
-                    Height
-                  </span>
-                  <span className="block text-gray-400">1.7m</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-base font-semibold uppercase tracking-widest">
-                    Weight
-                  </span>
-                  <span className="block text-gray-400">84.5Kg</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-base font-semibold uppercase tracking-widest">
-                    B. EXP
-                  </span>
-                  <span className="block text-gray-400">239</span>
-                </div>
-              </div>
-            </div>
-            <div className="weak my-8">
-              <h1 className="w-full text-center capitalize text-base font-semibold text-primaryText mb-2">
-                Weakness
-              </h1>
-              <div className="inline-grid grid-cols-3 gap-4 w-full">
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full flex items-start flex-col leading-none">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Fire
-                  </span>
+              </div>{" "}
+              <div className="text-center w-auto">
+                <span className="block text-base font-semibold uppercase tracking-widest">
+                  Weight
                 </span>
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full flex items-start flex-col leading-none">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Fly
-                  </span>
-                </span>{" "}
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full flex items-start flex-col leading-none">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Ice
-                  </span>
+                <span className="block text-gray-400">
+                  {pokemonInfo.weight}
                 </span>
-              </div>
-            </div>
-            <div className="attrs my-8">
-              <div className="inline-grid grid-cols-7 gap-1 w-full">
-                <div className="text-center w-auto">
-                  <span className="uppercase block text-xs font-semibold uppercase tracking-widest">
-                    Hp{" "}
-                  </span>
-                  <span className="block text-gray-400">84</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    Atk
-                  </span>
-                  <span className="block text-gray-400">86</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    Def
-                  </span>
-                  <span className="block text-gray-400">88</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    Sp.A
-                  </span>
-                  <span className="block text-gray-400">111</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    Sp.D
-                  </span>
-                  <span className="block text-gray-400">101</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    SPD
-                  </span>
-                  <span className="block text-gray-400">60</span>
-                </div>{" "}
-                <div className="text-center w-auto">
-                  <span className="block text-xs font-semibold uppercase tracking-widest">
-                    Tot
-                  </span>
-                  <span className="block text-gray-400">530</span>
-                </div>
-              </div>
-            </div>
-            <div className="evolve my-8">
-              <h1 className="capitalize w-full text-center text-base font-semibold text-primaryText mb-1">
-                Evolution
-              </h1>
-              <div className="h-16 row-auto items-center inline-grid grid-cols-5 gap-4 w-full">
-                <img
-                  className="w-full pokeImage"
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                />{" "}
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full h-fit">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Lvl 16
-                  </span>
+              </div>{" "}
+              <div className="text-center w-auto">
+                <span className="block text-base font-semibold uppercase tracking-widest">
+                  B. EXP
                 </span>
-                <img
-                  className="w-full pokeImage"
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                />{" "}
-                <span className="text-center w-full bg-grassType-bg py-2 rounded-full h-fit">
-                  <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
-                    Lvl 32
-                  </span>
+                <span className="block text-gray-400">
+                  {pokemonInfo.baseexp}
                 </span>
-                <img
-                  className="w-full pokeImage"
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                />
               </div>
             </div>
           </div>
-        </>
+          <div className="weak my-8">
+            <h1 className="fade-in-line w-full text-center capitalize text-base font-semibold text-primaryText mb-2">
+              Weakness
+            </h1>
+            <div className="fade-in-line inline-flex flex-wrap grid-cols-2 gap-x-1 gap-y-2 w-full">
+              {pokemonInfo.weakness.map((weak, index) => (
+                <span
+                  key={index}
+                  className={`${weak}Type w-fit px-4 flex py-2 rounded-full items-center flex-col leading-none`}
+                >
+                  <span
+                    key={index}
+                    className={`capitalize text-xs ${weak} font-bold`}
+                  >
+                    {weak}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="attrs my-8">
+            <div className="fade-in-line inline-grid grid-cols-7 gap-1 w-full">
+              <div className="fairyType rounded-full py-4 text-center w-auto">
+                <span className="uppercase block text-xs font-semibold uppercase tracking-widest">
+                  Hp{" "}
+                </span>
+                <span className="block text-gray-400">84</span>
+              </div>{" "}
+              <div className="fireType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  Atk
+                </span>
+                <span className="block text-gray-400">86</span>
+              </div>{" "}
+              <div className="waterType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  Def
+                </span>
+                <span className="block text-gray-400">88</span>
+              </div>{" "}
+              <div className="poisonType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  Sp.A
+                </span>
+                <span className="block text-gray-400">111</span>
+              </div>{" "}
+              <div className="flyingType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  Sp.D
+                </span>
+                <span className="block text-gray-400">101</span>
+              </div>{" "}
+              <div className="electricType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  SPD
+                </span>
+                <span className="block text-gray-400">60</span>
+              </div>{" "}
+              <div className="abilityType rounded-full py-4 text-center w-auto">
+                <span className="block text-xs font-semibold uppercase tracking-widest">
+                  Tot
+                </span>
+                <span className="block text-gray-400">530</span>
+              </div>
+            </div>
+          </div>
+          <div className="fade-in-line evolve my-8">
+            <h1 className="capitalize w-full text-center text-base font-semibold text-primaryText mb-1">
+              Evolution
+            </h1>
+            <div className="h-16 row-auto items-center inline-grid grid-cols-5 gap-4 w-full">
+              <img
+                className="w-full pokeImage"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+              />{" "}
+              <span className="text-center w-full bg-grassType-bg py-2 rounded-full h-fit">
+                <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
+                  Lvl 16
+                </span>
+              </span>
+              <img
+                className="w-full pokeImage"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+              />{" "}
+              <span className="text-center w-full bg-grassType-bg py-2 rounded-full h-fit">
+                <span className="w-full text-center capitalize text-sm text-grassType-text font-bold">
+                  Lvl 32
+                </span>
+              </span>
+              <img
+                className="w-full pokeImage"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+              />
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="justify-items-center text-center flex-col justify-center flex-auto place-content-center flex border-t-24 p-8 h-fit relative z-10 w-full border-4 border-gray-200 rounded-lg bg-white hover:opacity-100">
           <h2 className="text-xs text-gray-400 tracking-widest font-medium title-font mb-1">
